@@ -1,8 +1,12 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import { mockMonitors } from '@/lib/mockData';
 import MonitorCard from "@/components/MonitorCard";
+import { MonitorGridSkeleton } from "@/components/MonitorCardSkeleton";
 import { ChevronLeft, Check, Shield, Truck } from 'lucide-react';
 
 interface Props {
@@ -12,7 +16,14 @@ interface Props {
 }
 
 export default function MonitorDetailsPage({ params }: Props) {
+    const [isLoading, setIsLoading] = useState(true);
     const monitor = mockMonitors.find((m) => m.id === params.id);
+
+    useEffect(() => {
+        setIsLoading(true);
+        const timer = setTimeout(() => setIsLoading(false), 600);
+        return () => clearTimeout(timer);
+    }, [params.id]);
 
     if (!monitor) {
         notFound();
@@ -23,7 +34,7 @@ export default function MonitorDetailsPage({ params }: Props) {
             m.id !== params.id &&
             (m.specs.resolution === monitor.specs.resolution || m.specs.refreshRate === monitor.specs.refreshRate)
         )
-        .slice(0, 3);
+        .slice(0, 4);
 
     const discount = Math.round(((monitor.originalPrice - monitor.price) / monitor.originalPrice) * 100);
 
@@ -31,10 +42,10 @@ export default function MonitorDetailsPage({ params }: Props) {
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
             <Link
                 href="/"
-                className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+                className="group focus-ring mb-12 inline-flex items-center gap-2 rounded-lg py-2 text-[0.9375rem] font-bold text-blue-600 transition-all duration-200 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
             >
-                <ChevronLeft className="h-4 w-4" />
-                Back to Deals
+                <ChevronLeft className="h-5 w-5 transition-transform duration-200 group-hover:-translate-x-1 group-focus-visible:-translate-x-1" />
+                <span className="underline-offset-4 group-hover:underline group-focus-visible:underline">Back to Deals</span>
             </Link>
 
             <div className="grid gap-12 lg:grid-cols-2">
@@ -68,18 +79,18 @@ export default function MonitorDetailsPage({ params }: Props) {
                         <div className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                             Last updated: {monitor.lastUpdated}
                         </div>
-                        <div className="flex items-baseline gap-4">
-                            <span className="text-4xl font-bold text-gray-900 dark:text-white">
-                                £{monitor.price.toFixed(2)}
-                            </span>
+                        <div className="flex flex-col gap-1">
                             {monitor.originalPrice > monitor.price && (
-                                <span className="text-xl text-gray-500 line-through dark:text-gray-500">
+                                <span className="text-xl text-gray-500 line-through dark:text-zinc-400">
                                     £{monitor.originalPrice.toFixed(2)}
                                 </span>
                             )}
+                            <div className="text-4xl font-bold text-gray-900 dark:text-white">
+                                £{monitor.price.toFixed(2)}
+                            </div>
                         </div>
 
-                        <div className="mb-8 rounded-xl border border-gray-200 bg-gray-50 p-6 dark:border-gray-800 dark:bg-zinc-900/50">
+                        <div className="mt-4 mb-8 rounded-xl border border-gray-200 bg-gray-50 p-6 dark:border-gray-800 dark:bg-zinc-900/50">
                             <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
                                 Key Specifications
                             </h3>
@@ -102,7 +113,7 @@ export default function MonitorDetailsPage({ params }: Props) {
                         <div className="mb-8 space-y-3">
                             <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
                                 <Check className="h-5 w-5 text-green-500" />
-                                <span>In Stock at {monitor.retailer}</span>
+                                <span>In stock on Amazon UK</span>
                             </div>
                             <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
                                 <Shield className="h-5 w-5 text-blue-500" />
@@ -116,29 +127,36 @@ export default function MonitorDetailsPage({ params }: Props) {
 
                         <Link
                             href={monitor.affiliateLink}
-                            className="block w-full rounded-xl bg-blue-600 px-8 py-4 text-center text-lg font-bold text-white transition-all hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-900"
+                            className="active-press block w-full rounded-xl bg-blue-600 px-8 py-4 text-center text-lg font-bold text-white transition-all hover:bg-blue-700 hover:shadow-lg"
                         >
-                            Buy Now from {monitor.retailer}
+                            Buy now on Amazon UK
                         </Link>
                         <p className="mt-4 text-center text-xs text-gray-500">
                             * We earn a commission if you make a purchase, at no additional cost to you.
                         </p>
                     </div>
                 </div>
+            </div>
 
-                {similarMonitors.length > 0 && (
-                    <div className="mt-24 border-t border-gray-200 pt-12 dark:border-gray-800">
-                        <h2 className="mb-8 text-2xl font-bold text-gray-900 dark:text-white">
-                            You Might Also Like
-                        </h2>
-                        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {similarMonitors.length > 0 && (
+                <div className="mt-24 border-t border-gray-200 pt-12 dark:border-gray-800">
+                    <h2 className="mb-8 text-2xl font-bold text-gray-900 dark:text-white">
+                        You Might Also Like
+                    </h2>
+                    <div className="relative">
+                        {isLoading ? (
+                            <div className="absolute inset-0 z-10 bg-white dark:bg-black transition-opacity duration-300">
+                                <MonitorGridSkeleton count={4} />
+                            </div>
+                        ) : null}
+                        <div className={`grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${isLoading ? 'opacity-0' : 'animate-fade-in-premium'}`}>
                             {similarMonitors.map((m) => (
                                 <MonitorCard key={m.id} monitor={m} />
                             ))}
                         </div>
                     </div>
-                )}
-            </div>
+                </div>
+            )}
         </div>
     );
 }
