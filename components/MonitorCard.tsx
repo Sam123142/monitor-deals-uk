@@ -1,18 +1,21 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Monitor } from '@/lib/mockData';
+import { Scale } from 'lucide-react';
+import { useCompare } from '@/context/CompareContext';
 
 interface MonitorCardProps {
     monitor: Monitor;
 }
 
 export default function MonitorCard({ monitor }: MonitorCardProps) {
+    const { addToCompare } = useCompare();
     const discount = Math.round(((monitor.originalPrice - monitor.price) / monitor.originalPrice) * 100);
 
     return (
         <Link
             href={`/monitor/${monitor.id}`}
-            className="active-press group relative flex h-full flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 ease-out md:hover:-translate-y-1.5 md:focus-visible:-translate-y-1.5 md:hover:shadow-xl md:hover:shadow-blue-500/5 dark:border-gray-800 dark:bg-zinc-900 dark:md:hover:shadow-blue-900/10"
+            className="active-press group relative flex h-full flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 ease-out md:hover:-translate-y-1 md:focus-visible:-translate-y-1 md:hover:shadow-xl md:hover:shadow-purple-500/5 dark:border-gray-800 dark:bg-zinc-900 dark:md:hover:shadow-purple-900/5"
         >
             <div className="relative aspect-video w-full overflow-hidden bg-gray-100 dark:bg-zinc-800">
                 <Image
@@ -26,15 +29,25 @@ export default function MonitorCard({ monitor }: MonitorCardProps) {
                         -{discount}%
                     </div>
                 )}
+                <button
+                    onClick={(e) => {
+                        e.preventDefault();
+                        addToCompare(monitor.id);
+                    }}
+                    className="absolute right-2 top-2 z-20 rounded-full bg-white/90 p-1.5 text-gray-600 shadow-sm transition-all hover:bg-white hover:text-purple-600 hover:shadow opacity-100 md:opacity-0 md:group-hover:opacity-100 dark:bg-black/90 dark:text-gray-300 dark:hover:bg-black dark:hover:text-purple-400"
+                    title="Compare"
+                >
+                    <Scale className="h-4 w-4" />
+                </button>
             </div>
             <div className="flex flex-1 flex-col p-4 pb-5">
-                <div className="mb-2 text-xs font-bold text-blue-600 dark:text-blue-500 uppercase tracking-tight">
+                <div className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-500 uppercase tracking-tight">
                     {monitor.specs.brand}
                 </div>
 
                 {/* Fixed height for title area */}
                 <div className="h-[3.75rem] mb-2">
-                    <h3 className="line-clamp-2 text-[1.125rem] leading-tight font-bold text-gray-900 group-hover:text-blue-600 dark:text-gray-100 dark:group-hover:text-blue-400">
+                    <h3 className="line-clamp-2 text-[1.125rem] leading-tight font-bold text-gray-900 dark:text-gray-100">
                         {monitor.title}
                     </h3>
                 </div>
@@ -79,10 +92,10 @@ export default function MonitorCard({ monitor }: MonitorCardProps) {
                         </div>
                     </div>
                     <div
-                        className="flex flex-col items-center justify-center rounded-xl bg-blue-600 px-6 py-2 text-[0.85rem] leading-tight font-black text-white transition-all hover:bg-blue-700 hover:shadow-lg min-w-[6.5rem] h-[3.25rem]"
+                        className="premium-button-card flex-col !px-4 !py-1 !h-[3.25rem] !min-w-[6.5rem] leading-tight text-[0.85rem]"
                     >
-                        <span>View</span>
-                        <span>Deal</span>
+                        <span>Buy on</span>
+                        <span>Amazon</span>
                     </div>
                 </div>
             </div>

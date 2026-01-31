@@ -8,6 +8,7 @@ import { mockMonitors } from '@/lib/mockData';
 import MonitorCard from "@/components/MonitorCard";
 import { MonitorGridSkeleton } from "@/components/MonitorCardSkeleton";
 import { ChevronLeft, Check, Shield, Truck } from 'lucide-react';
+import { useCompare } from '@/context/CompareContext';
 
 interface Props {
     params: {
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export default function MonitorDetailsPage({ params }: Props) {
+    const { addToCompare } = useCompare();
     const [isLoading, setIsLoading] = useState(true);
     const monitor = mockMonitors.find((m) => m.id === params.id);
 
@@ -42,10 +44,10 @@ export default function MonitorDetailsPage({ params }: Props) {
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
             <Link
                 href="/"
-                className="group focus-ring mb-12 inline-flex items-center gap-2 rounded-lg py-2 text-[0.9375rem] font-bold text-blue-600 transition-all duration-200 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                className="premium-link group focus-ring mb-12 inline-flex items-center gap-2 rounded-lg py-2 text-[0.9375rem] font-bold text-gray-600 dark:text-gray-400"
             >
                 <ChevronLeft className="h-5 w-5 transition-transform duration-200 group-hover:-translate-x-1 group-focus-visible:-translate-x-1" />
-                <span className="underline-offset-4 group-hover:underline group-focus-visible:underline">Back to Deals</span>
+                <span>Back to Deals</span>
             </Link>
 
             <div className="grid gap-12 lg:grid-cols-2">
@@ -67,7 +69,7 @@ export default function MonitorDetailsPage({ params }: Props) {
 
                 {/* Info Section */}
                 <div>
-                    <div className="mb-2 inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                    <div className="secondary-status-pill mb-4 px-3 py-1">
                         {monitor.specs.brand}
                     </div>
                     <h1 className="mb-4 text-3xl font-bold text-gray-900 sm:text-4xl dark:text-white">
@@ -116,21 +118,30 @@ export default function MonitorDetailsPage({ params }: Props) {
                                 <span>In stock on Amazon UK</span>
                             </div>
                             <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
-                                <Shield className="h-5 w-5 text-blue-500" />
+                                <Shield className="h-5 w-5 text-gray-400" />
                                 <span>2 Year Manufacturer Warranty</span>
                             </div>
                             <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
-                                <Truck className="h-5 w-5 text-blue-500" />
+                                <Truck className="h-5 w-5 text-gray-400" />
                                 <span>Free 2-Day Shipping</span>
                             </div>
                         </div>
 
-                        <Link
-                            href={monitor.affiliateLink}
-                            className="active-press block w-full rounded-xl bg-blue-600 px-8 py-4 text-center text-lg font-bold text-white transition-all hover:bg-blue-700 hover:shadow-lg"
-                        >
-                            Buy now on Amazon UK
-                        </Link>
+                        <div className="flex gap-4">
+                            <Link
+                                href={monitor.affiliateLink}
+                                className="premium-button-primary flex-1 text-lg"
+                            >
+                                Buy now on Amazon UK
+                            </Link>
+                            <button
+                                onClick={() => addToCompare(monitor.id)}
+                                className="active-press flex items-center justify-center rounded-xl border-2 border-gray-200 px-6 font-bold text-gray-700 transition-all hover:border-gray-300 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-zinc-800"
+                                title="Compare with another monitor"
+                            >
+                                Compare
+                            </button>
+                        </div>
                         <p className="mt-4 text-center text-xs text-gray-500">
                             * We earn a commission if you make a purchase, at no additional cost to you.
                         </p>

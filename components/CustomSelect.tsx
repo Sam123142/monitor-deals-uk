@@ -48,7 +48,7 @@ export default function CustomSelect({ value, onChange, options }: CustomSelectP
                 aria-haspopup="listbox"
                 aria-expanded={isOpen}
                 onClick={() => setIsOpen(!isOpen)}
-                className="active-press flex w-full items-center justify-between gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm transition-all hover:border-gray-400 dark:border-gray-700 dark:bg-zinc-900 dark:text-white dark:hover:border-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                className="active-press flex w-full items-center justify-between gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm transition-all hover:border-gray-400 dark:border-gray-700 dark:bg-zinc-900 dark:text-white dark:hover:border-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
             >
                 <span className="truncate">{selectedOption.label}</span>
                 <ChevronDown className={`h-4 w-4 text-gray-500 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
@@ -69,8 +69,8 @@ export default function CustomSelect({ value, onChange, options }: CustomSelectP
                                 setIsOpen(false);
                             }}
                             className={`block w-full rounded-md px-3 py-2 text-left text-sm transition-colors ${option.value === value
-                                    ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/40 dark:text-blue-400'
-                                    : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-zinc-800/80'
+                                ? 'bg-purple-50 font-medium text-purple-600 dark:bg-purple-900/40 dark:text-purple-400'
+                                : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-zinc-800/80'
                                 }`}
                         >
                             {option.label}

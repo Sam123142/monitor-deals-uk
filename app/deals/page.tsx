@@ -2,7 +2,7 @@
 
 import { Suspense, useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { X, Clock, Search } from 'lucide-react';
+import { X, Clock, Search, Scale } from 'lucide-react';
 import { mockMonitors } from "@/lib/mockData";
 import MonitorCard from "@/components/MonitorCard";
 import CustomSelect from '@/components/CustomSelect';
@@ -101,12 +101,34 @@ function DealsPageContent() {
                     <div className="mt-1 flex items-center text-sm text-gray-500 dark:text-gray-400">
                         <span>{filteredMonitors.length} monitors found</span>
                         <span className="mx-2 opacity-25 dark:opacity-20">•</span>
-                        <span className="flex items-center gap-1.5 text-blue-600/60 dark:text-blue-400/50">
+                        <span className="flex items-center gap-1.5 text-gray-500/60 dark:text-gray-400/50">
                             <Clock className="h-3.5 w-3.5" />
                             <span>Last updated: {mockMonitors[0].lastUpdated}</span>
                         </span>
                     </div>
                 </div>
+
+                {searchParams.get('mode') === 'compare' && (
+                    <div className="flex animate-fade-in-premium items-center gap-3 rounded-2xl bg-purple-50 px-5 py-3 dark:bg-purple-900/10 border border-purple-100 dark:border-purple-800/30 shadow-sm shadow-purple-500/5">
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-600 text-[10px] font-bold text-white">
+                            <Scale className="h-3 w-3" />
+                        </div>
+                        <div className="flex flex-col">
+                            <p className="text-xs font-bold text-purple-900 dark:text-purple-300">Compare Mode Active</p>
+                            <p className="text-[11px] text-purple-700 dark:text-purple-400 opacity-80">Select a monitor below to add it to your comparison list.</p>
+                        </div>
+                        <button
+                            onClick={() => {
+                                const params = new URLSearchParams(searchParams.toString());
+                                params.delete('mode');
+                                router.push(`/deals?${params.toString()}`);
+                            }}
+                            className="ml-auto rounded-lg p-1 text-purple-400 hover:bg-purple-100 hover:text-purple-600 dark:text-purple-500 dark:hover:bg-purple-900/40"
+                        >
+                            <X className="h-4 w-4" />
+                        </button>
+                    </div>
+                )}
 
                 <div className="flex flex-wrap items-center gap-3">
                     <CustomSelect
@@ -147,42 +169,42 @@ function DealsPageContent() {
                     {query && (
                         <button
                             onClick={() => removeFilter('search')}
-                            className="active-press group flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-medium text-gray-700 transition-all hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:border-gray-800 dark:bg-zinc-900/50 dark:text-gray-300 dark:hover:border-blue-900/50 dark:hover:bg-blue-900/20 dark:hover:text-blue-400"
+                            className="active-press group flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-medium text-gray-700 transition-all hover:border-purple-300 hover:bg-purple-50 hover:text-purple-600 dark:hover:border-purple-900/50 dark:hover:bg-purple-900/20 dark:hover:text-purple-400"
                         >
                             Search: {query}
-                            <X className="h-3 w-3 transition-colors group-hover:text-blue-500" />
+                            <X className="h-3 w-3 transition-colors group-hover:text-purple-500" />
                         </button>
                     )}
                     {selectedBrand !== 'All' && (
                         <button
                             onClick={() => removeFilter('brand')}
-                            className="active-press group flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-medium text-gray-700 transition-all hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:border-gray-800 dark:bg-zinc-900/50 dark:text-gray-300 dark:hover:border-blue-900/50 dark:hover:bg-blue-900/20 dark:hover:text-blue-400"
+                            className="active-press group flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-medium text-gray-700 transition-all hover:border-purple-300 hover:bg-purple-50 hover:text-purple-600 dark:hover:border-purple-900/50 dark:hover:bg-purple-900/20 dark:hover:text-purple-400"
                         >
                             {selectedBrand}
-                            <X className="h-3 w-3 transition-colors group-hover:text-blue-500" />
+                            <X className="h-3 w-3 transition-colors group-hover:text-purple-500" />
                         </button>
                     )}
                     {selectedResolution !== 'All' && (
                         <button
                             onClick={() => removeFilter('resolution')}
-                            className="active-press group flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-medium text-gray-700 transition-all hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:border-gray-800 dark:bg-zinc-900/50 dark:text-gray-300 dark:hover:border-blue-900/50 dark:hover:bg-blue-900/20 dark:hover:text-blue-400"
+                            className="active-press group flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-medium text-gray-700 transition-all hover:border-purple-300 hover:bg-purple-50 hover:text-purple-600 dark:hover:border-purple-900/50 dark:hover:bg-purple-900/20 dark:hover:text-purple-400"
                         >
                             {selectedResolution}
-                            <X className="h-3 w-3 transition-colors group-hover:text-blue-500" />
+                            <X className="h-3 w-3 transition-colors group-hover:text-purple-500" />
                         </button>
                     )}
                     {selectedRefresh !== 'All' && (
                         <button
                             onClick={() => removeFilter('refresh')}
-                            className="active-press group flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-medium text-gray-700 transition-all hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:border-gray-800 dark:bg-zinc-900/50 dark:text-gray-300 dark:hover:border-blue-900/50 dark:hover:bg-blue-900/20 dark:hover:text-blue-400"
+                            className="active-press group flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-medium text-gray-700 transition-all hover:border-purple-300 hover:bg-purple-50 hover:text-purple-600 dark:hover:border-purple-900/50 dark:hover:bg-purple-900/20 dark:hover:text-purple-400"
                         >
                             {selectedRefresh}
-                            <X className="h-3 w-3 transition-colors group-hover:text-blue-500" />
+                            <X className="h-3 w-3 transition-colors group-hover:text-purple-500" />
                         </button>
                     )}
                     <button
                         onClick={clearAllFilters}
-                        className="ml-1 text-xs font-semibold text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                        className="ml-1 text-xs font-semibold text-purple-600 hover:text-purple-500 dark:text-purple-400 dark:hover:text-purple-300 transition-colors"
                     >
                         Clear all
                     </button>
