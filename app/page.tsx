@@ -42,7 +42,7 @@ export default function Home() {
                             </div>
                         </div>
                         <p className="animate-hero-buttons mt-6 text-xs font-medium text-gray-500 dark:text-zinc-400">
-                            Updated regularly • UK pricing • Affiliate links
+                            Updated regularly • UK pricing • No price markup
                         </p>
                     </div>
                 </div>

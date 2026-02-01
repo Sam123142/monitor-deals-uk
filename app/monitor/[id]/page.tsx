@@ -123,7 +123,7 @@ export default function MonitorDetailsPage({ params }: Props) {
                             </div>
                             <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
                                 <Truck className="h-5 w-5 text-gray-400" />
-                                <span>Free 2-Day Shipping</span>
+                                <span>Free 2-Day Delivery</span>
                             </div>
                         </div>
 

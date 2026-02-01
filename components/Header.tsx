@@ -74,6 +74,13 @@ function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
         { href: '/compare', label: 'Compare', count: compareIds.length },
     ];
 
+    const legalLinks = [
+        { href: '/affiliate-disclosure', label: 'Affiliate Disclosure' },
+        { href: '/privacy', label: 'Privacy Policy' },
+        { href: '/terms', label: 'Terms of Service' },
+        { href: '/how-we-choose-deals', label: 'How We Choose Deals' },
+    ];
+
     if (!mounted) return null;
 
     return createPortal(
@@ -134,6 +141,24 @@ function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
                                 </Link>
                             );
                         })}
+
+                        <div className="mt-8">
+                            <h3 className="px-4 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                                Legal & Trust
+                            </h3>
+                            <div className="mt-2 flex flex-col gap-1">
+                                {legalLinks.map((link) => (
+                                    <Link
+                                        key={link.href}
+                                        href={link.href}
+                                        onClick={onClose}
+                                        className="flex items-center rounded-xl px-4 py-3 text-[15px] text-gray-600 transition-all hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-zinc-900"
+                                    >
+                                        {link.label}
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
                     </nav>
                 </div>
             </div>
