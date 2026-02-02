@@ -130,13 +130,14 @@ export default function MonitorDetailsPage({ params }: Props) {
                         <div className="flex gap-4">
                             <Link
                                 href={monitor.affiliateLink}
-                                className="premium-button-primary flex-1 text-lg"
+                                className="premium-button-primary flex-1 text-lg min-h-[52px] flex items-center justify-center text-center"
                             >
-                                Buy now on Amazon UK
+                                <span className="sm:hidden">Buy on Amazon</span>
+                                <span className="hidden sm:inline">Buy now on Amazon UK</span>
                             </Link>
                             <button
                                 onClick={() => addToCompare(monitor.id)}
-                                className="active-press flex items-center justify-center rounded-xl border-2 border-gray-200 px-6 font-bold text-gray-700 transition-all hover:border-gray-300 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-zinc-800"
+                                className="active-press min-h-[52px] flex items-center justify-center rounded-xl border-2 border-gray-200 px-6 font-bold text-gray-700 transition-all hover:border-gray-300 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-zinc-800"
                                 title="Compare with another monitor"
                             >
                                 Compare
